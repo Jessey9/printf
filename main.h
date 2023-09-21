@@ -50,11 +50,11 @@ va_list list, char buffer[], int flags, int width, int precision, int size);
  ********************************************************/
 
 /* Showing funtions to print char and strings */
-int print_char(va_list types, char buffer[],
+int print_char(va_list args_list, char buffer[],
 	int flags, int width, it precision, int size);
-int print_string(va_list types, char buffer[],
+int print_string(va_list args_list, char buffer[],
 	int flags, int width, int precision, int size);
-int print_percent(va_list types, char buffer[],
+int print_percent(va_list args_list, char buffer[],
 	int flags, int width, int precision, int size);
 
 /* Showing functions to print numbers */
@@ -70,7 +70,6 @@ int print_hexadecimal(va_list types, char buffer[],
 	int flags, int width, int precision, int size);
 int print_hexa_upper(va_list types, char buffer[],
 	int flags, int width, int precision, int size);
-
 int print_hexa(va_list types, char map_to[],
 char buffer[], int flags, char flag_ch, int width, int precision, int size);
 
