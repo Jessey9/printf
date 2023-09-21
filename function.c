@@ -1,60 +1,99 @@
 #include "main.h"
 
+/************************* PRINT CHAR *************************/
+
 /**
- * _printf - Prints an argument to the standard output
- * @format: It determines how many arguments are expected
- * and their types
+ * print_char - Prints a char
+ * @args_list: List of arguments
+ * @buffer: Buffer array to handle print
+ * @flags: Evaluates active flags
+ * @width: Width
+ * @precision: Sprecifies precision
+ * @size: Specifies size
  * Return: Number of chars printed
  */
-
-int _printf(const char *format, ...)
+int print_char(va_list args_list, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	int char_printed = 0;
-	va_list args_list;
+	char c = va_arg(args_list, int);
 
-	if (format == NULL)
-		return (-1);
+	return (handle_write_char(c, buffer, flags, width, precision, size));
+}
+/************************* PRINT A STRING *************************/
+/**
+ * print_string - Prints a string
+ * @args_list: List of arguments
+ * @buffer:  Buffer array to handle print
+ * @flags: Evaluates active flags
+ * @width: get width.
+ * @precision: Specifies precision
+ * @size: Specifies size
+ * Return: Number of chars printed
+ */
+int print_string(va_list args_list, char buffer[],
+	int flags, int width, int precision, int size)
+{
+	int char_printed = 0, i;
+	char *str = va_arg(args_list, char *);
 
-	va_start(args_list, format);
-
-	while (*format)
+	UNUSED(buffer);
+	UNUSED(flags);
+	UNUSED(width);
+	UNUSED(precision);
+	UNUSED(size);
+	if (str == NULL)
 	{
-		if (*format != '%')
+		str = "(null)";
+		if (precision >= 6)
+			str = "      ";
+	}
+
+	while (str[char_printed] != '\0')
+		length++;
+
+	if (precision >= 0 && precision < char_printed)
+		char_printed = precision;
+
+	if (width > char_printed)
+	{
+		if (flags & F_MINUS)
 		{
-			write(1, format, 1);
-			char_printed++;
+			write(1, &str[0], char_printed);
+			for (i = width - char_printed; i > 0; i--)
+				write(1, " ", 1);
+			return (width);
 		}
 		else
 		{
-			format++;
-			if (*format == '\0')
-				break;
-			if (*format == '%')
-			{
-				write(1, format, 1);
-				char_printed++;
-			}
-			else if (*format == 'c')
-			{
-				char c = va_arg(args_list, char*);
-
-				write(1, &c, 1);
-				char_printed++;
-			}
-			else if (*format == 's')
-			{
-				char *str = va_arg(args_list, char*);
-				int str_len = 0;
-
-				while (str[str_len] != '\0')
-					str_len++;
-
-				write(1, str, str_len);
-				char_printed += str_len;
-			}
+			for (i = width - char_printed; i > 0; i--)
+				write(1, " ", 1);
+			write(1, &str[0], char_printed);
+			return (width);
 		}
-		format++;
 	}
-	va_end(args_list);
-	return (char_printed);
+	return (write(1, str, char_printed));
+}
+
+/************************* PRINT PERCENT SIGN *************************/
+/**
+ * print_percent - Prints a percent sign
+ * @args_list: List of arguments
+ * @buffer: Buffer array to handle print
+ * @flags: Evaluates active flags
+ * @width: get width.
+ * @precision: Specifies precision
+ * @size: Specifies size
+ * Return: Number of chars printed
+ */
+int print_percent(va_list args_list, char buffer[],
+		int flags, int width, int precision, int size)
+{
+	UNUSED(types);
+	UNUSED(buffer);
+	UNUSED(flags);
+	UNUSED(width);
+	UNUSED(precision);
+	UNUSED(size);
+	return (write(1, "%%", 1));
+}
 }
